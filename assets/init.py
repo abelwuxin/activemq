@@ -245,6 +245,20 @@ class ServiceRun():
         self.replace_all(ACTIVEMQ_CONF + "/log4j.properties", "\$\{activemq\.base\}\/data\/", "/var/log/activemq/")
         self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"wrapper\.logfile=%ACTIVEMQ_DATA%\/wrapper\.log", "wrapper.logfile=/var/log/activemq/wrapper.log")
 
+	### edit the 32 edition
+
+        # We change the activemq launcher to start activemq with activmq user
+        self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-32/activemq", "#RUN_AS_USER=", "RUN_AS_USER=activemq")
+
+        # We change some macro on wrapper.conf to move data
+        self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-32/wrapper.conf" ,"set\.default\.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%\/data", "set.default.ACTIVEMQ_DATA=/data/activemq")
+
+        # Fix bug #4 "Cannot mount a custom activemq.xml"
+        self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-32/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf$", "set.default.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf.tmp")
+
+        # We replace the log output
+        self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-32/wrapper.conf" ,"wrapper\.logfile=%ACTIVEMQ_DATA%\/wrapper\.log", "wrapper.logfile=/var/log/activemq/wrapper.log")
+
 
 if __name__ == '__main__':
 
