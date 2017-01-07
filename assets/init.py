@@ -8,7 +8,7 @@ import re
 
 
 ACTIVEMQ_HOME = "/opt/activemq"
-ACTIVEMQ_CONF = ACTIVEMQ_HOME + '/conf.tmp'
+ACTIVEMQ_CONF = ACTIVEMQ_HOME + '/conf'
 
 
 class ServiceRun():
@@ -239,7 +239,7 @@ class ServiceRun():
         self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%\/data", "set.default.ACTIVEMQ_DATA=/data/activemq")
 
         # Fix bug #4 "Cannot mount a custom activemq.xml"
-        self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf$", "set.default.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf.tmp")
+        self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-64/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf$", "set.default.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf")
 
         # We replace the log output
         self.replace_all(ACTIVEMQ_CONF + "/log4j.properties", "\$\{activemq\.base\}\/data\/", "/var/log/activemq/")
@@ -254,7 +254,7 @@ class ServiceRun():
         self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-32/wrapper.conf" ,"set\.default\.ACTIVEMQ_DATA=%ACTIVEMQ_BASE%\/data", "set.default.ACTIVEMQ_DATA=/data/activemq")
 
         # Fix bug #4 "Cannot mount a custom activemq.xml"
-        self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-32/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf$", "set.default.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf.tmp")
+        self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-32/wrapper.conf" ,"set\.default\.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf$", "set.default.ACTIVEMQ_CONF=%ACTIVEMQ_BASE%/conf")
 
         # We replace the log output
         self.replace_all(ACTIVEMQ_HOME + "/bin/linux-x86-32/wrapper.conf" ,"wrapper\.logfile=%ACTIVEMQ_DATA%\/wrapper\.log", "wrapper.logfile=/var/log/activemq/wrapper.log")
@@ -263,8 +263,8 @@ class ServiceRun():
 if __name__ == '__main__':
 
     # We move all config file on temporary folder (Fix bug # 4)
-    shutil.rmtree(ACTIVEMQ_CONF, ignore_errors=True);
-    shutil.copytree(ACTIVEMQ_HOME + "/conf/", ACTIVEMQ_CONF);
+    #shutil.rmtree(ACTIVEMQ_CONF, ignore_errors=True);
+    #shutil.copytree(ACTIVEMQ_HOME + "/conf/", ACTIVEMQ_CONF);
 
     # We fix right on volume
     os.system("chown -R activemq:activemq /data/activemq")
